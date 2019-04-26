@@ -1,0 +1,24 @@
+{
+  "name": "azure-functions-blob-backup",
+  "version": "0.0.1",
+  "description": "Azure Function for creating snapshots for Blob storage",
+  "main": "TimerTrigger/index.js",
+  "dependencies": {
+    "@azure/storage-blob": "^10.3.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "hth@deus.solita.fi:Solita/projects/solita_infra/repositories/git/azure-functions-blob-backup"
+  },
+  "keywords": [
+    "Azure Functions",
+    "Blob",
+    "Snapshot"
+  ],
+  "author": "Henri Kuittinen <henri@kuittinen.email> (https://github.com/henrikuittinen)",
+  "license": "ISC"
+}
