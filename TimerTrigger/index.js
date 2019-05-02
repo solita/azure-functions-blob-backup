@@ -28,14 +28,18 @@ module.exports = async function (context) {
     pipeline
   );
   
-  const containers = process.env.containers.split(",");
+  // Split and trim the comma separated container list to an array
+  const containers = process.env.containers.split(",").map(item => item.trim());
 
+  // Go through the list of containers
   for (const container of containers) {
-    console.log(container);
+    
+    context.log(`Starting to snapshot all files/blogs in a container named '${container}'`);
     const sourceURL = ContainerURL.fromServiceURL(serviceURL, container);
 
     // Loop through all blobs (files) in the given container, marker style as MicroSoft recommends
     let marker = undefined;
+    let blobCount = 0;
     do {
       const listBlobsResponse = await sourceURL.listBlobFlatSegment(
         Aborter.none,
@@ -46,13 +50,16 @@ module.exports = async function (context) {
   
       for (const blob of listBlobsResponse.segment.blobItems) {
         const sourceBlobURL = BlobURL.fromContainerURL(sourceURL, blob.name);
+
+        // Do the actual snapshot or fail trying
         try {
           const response = await sourceBlobURL.createSnapshot(Aborter.none);
-          context.log(response);
+          blobCount++;
         } catch (error) {
           context.log.error(error);
         }
       }
     } while (marker);
+    context.log(`Did snapshots for ${blobCount} files/blobs in a container '${container}'`)
   }
 };
