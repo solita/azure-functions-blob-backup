@@ -4,7 +4,7 @@ A fairly simple node.js Azure Function for snapshotting all files/blobs periodic
 
 ## How it works
 
-Using the `@azure/storage-blob` npm package, the script contacts the given Storage Account and iterates through all files in containers configured in `Application Settings`. This is a crontab style timed process (see `function.json`).
+Using the `@azure/storage-blob` npm package, the script contacts the given Storage Account and iterates through all files in containers configured in Azure Function's `Application Settings`. This is a crontab style timed process (see `function.json`).
 
 This function does not delete old snapshots, that needs to be configured in the Storage Account's `Lifecycle Management`.
 
