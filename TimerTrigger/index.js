@@ -28,26 +28,31 @@ module.exports = async function (context) {
     pipeline
   );
   
-  const sourceURL = ContainerURL.fromServiceURL(serviceURL, process.env.container);
+  const containers = process.env.containers.split(",");
 
-  // Loop through all blobs in the given container, marker style as MicroSoft recommends
-  marker = undefined;
-  do {
-    const listBlobsResponse = await sourceURL.listBlobFlatSegment(
-      Aborter.none,
-      marker,
-    );
+  for (const container of containers) {
+    console.log(container);
+    const sourceURL = ContainerURL.fromServiceURL(serviceURL, container);
 
-    marker = listBlobsResponse.nextMarker;
-
-    for (const blob of listBlobsResponse.segment.blobItems) {
-      const sourceBlobURL = BlobURL.fromContainerURL(sourceURL, blob.name);
-      try {
-        const response = await sourceBlobURL.createSnapshot(Aborter.none);
-        context.log(response);
-      } catch (error) {
-        context.log.error(error);
+    // Loop through all blobs (files) in the given container, marker style as MicroSoft recommends
+    let marker = undefined;
+    do {
+      const listBlobsResponse = await sourceURL.listBlobFlatSegment(
+        Aborter.none,
+        marker,
+      );
+  
+      marker = listBlobsResponse.nextMarker;
+  
+      for (const blob of listBlobsResponse.segment.blobItems) {
+        const sourceBlobURL = BlobURL.fromContainerURL(sourceURL, blob.name);
+        try {
+          const response = await sourceBlobURL.createSnapshot(Aborter.none);
+          context.log(response);
+        } catch (error) {
+          context.log.error(error);
+        }
       }
-    }
-  } while (marker);
+    } while (marker);
+  }
 };
