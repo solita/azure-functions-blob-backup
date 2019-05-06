@@ -34,7 +34,7 @@ module.exports = async function (context) {
   // Go through the list of containers
   for (const container of containers) {
     
-    context.log(`Starting to snapshot all files/blogs in a container named '${container}'`);
+    context.log(`Starting to snapshot all files/blobs in a container named '${container}'`);
     const sourceURL = ContainerURL.fromServiceURL(serviceURL, container);
 
     // Loop through all blobs (files) in the given container, marker style as MicroSoft recommends
@@ -53,7 +53,7 @@ module.exports = async function (context) {
 
         // Do the actual snapshot or fail trying
         try {
-          const response = await sourceBlobURL.createSnapshot(Aborter.none);
+          sourceBlobURL.createSnapshot(Aborter.none);
           blobCount++;
         } catch (error) {
           context.log.error(error);
