@@ -10,7 +10,7 @@ node blobSnapshot.js --account=storageaccount --key=XXX --containers=container1,
 
 ## How it works
 
-Using the `@azure/storage-blob` npm package, the script contacts the given Storage Account and iterates through all files in containers set in ENV variable `containers`
+Using the `@azure/storage-blob` npm package, the script contacts the given Storage Account and iterates through all files in containers set in argument `containers`
 
 This function does not delete old snapshots, that needs to be configured in the Storage Account's `Lifecycle Management`.
 
