@@ -1,4 +1,4 @@
-# Azure Function for Blob backups
+# Azure Function for Blob snapshots
 
 A fairly simple node.js Azure Function for snapshotting all files/blobs periodically in given containers within a Storage Account
 

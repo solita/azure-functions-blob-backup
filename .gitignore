@@ -88,3 +88,4 @@ local.settings.json
 # TypeScript output
 dist
 out
+.vscode
