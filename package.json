@@ -4,7 +4,8 @@
   "description": "Azure Function for creating snapshots for Blob storage",
   "main": "TimerTrigger/index.js",
   "dependencies": {
-    "@azure/storage-blob": "^10.3.0"
+    "@azure/storage-blob": "^10.3.0",
+    "yargs": "^13.2.2"
   },
   "devDependencies": {},
   "scripts": {

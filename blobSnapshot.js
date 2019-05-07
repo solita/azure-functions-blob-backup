@@ -7,14 +7,18 @@ const {
     SharedKeyCredential,
   } = require("@azure/storage-blob");
 
+  const argv = require('yargs').argv;
+
+
+
 /**
  * Snapshot all blobs in a given container
  */
-module.exports = async function (context) {
+async function main() {
   
   // Get account credentials from prod ENV / or DEV local.settings.json
-  const account = process.env.account;
-  const accountKey = process.env.accountKey;
+  const account = argv.account || process.env.AZ_STORAGE_ACCOUNT;
+  const accountKey = argv.key || process.env.AZ_STORAGE_ACCOUNT_KEY;
 
   // Use SharedKeyCredential with storage account and account key
   const sharedKeyCredential = new SharedKeyCredential(account, accountKey);
@@ -29,12 +33,12 @@ module.exports = async function (context) {
   );
   
   // Split and trim the comma separated container list to an array
-  const containers = process.env.containers.split(",").map(item => item.trim());
+  const containers = (argv.containers || process.env.AZ_STORAGE_CONTAINERS).split(",").map(item => item.trim());
 
   // Go through the list of containers
   for (const container of containers) {
     
-    context.log(`Starting to snapshot all files/blobs in a container named '${container}'`);
+    console.log(`Starting to snapshot all files/blobs in a container named '${container}'`);
     const sourceURL = ContainerURL.fromServiceURL(serviceURL, container);
 
     // Loop through all blobs (files) in the given container, marker style as MicroSoft recommends
@@ -56,10 +60,16 @@ module.exports = async function (context) {
           sourceBlobURL.createSnapshot(Aborter.none);
           blobCount++;
         } catch (error) {
-          context.log.error(error);
+          console.log(error);
         }
       }
     } while (marker);
-    context.log(`Did snapshots for ${blobCount} files/blobs in a container '${container}'`)
+    console.log(`Did snapshots for ${blobCount} files/blobs in a container '${container}'`)
   }
 };
+
+main().then(() => {
+  console.log('Done.');
+}).catch(err => {
+  console.log(err.message);
+});

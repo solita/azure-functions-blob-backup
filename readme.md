@@ -1,10 +1,16 @@
-# Azure Function for Blob backups
+# Command line tool for Azure Blob backups
 
-A fairly simple node.js Azure Function for snapshotting all files/blobs periodically in given containers within a Storage Account
+A fairly simple node.js command line tool for snapshotting all files/blobs periodically in given containers within a Storage Account.
+
+## Usage
+
+```
+node blobSnapshot.js --account=storageaccount --key=XXX --containers=container1,container2
+```
 
 ## How it works
 
-Using the `@azure/storage-blob` npm package, the script contacts the given Storage Account and iterates through all files in containers configured in Azure Function's `Application Settings`. This is a crontab style timed process (see `function.json`).
+Using the `@azure/storage-blob` npm package, the script contacts the given Storage Account and iterates through all files in containers set in ENV variable `containers`
 
 This function does not delete old snapshots, that needs to be configured in the Storage Account's `Lifecycle Management`.
 
@@ -12,21 +18,13 @@ Also, it's recommended to enable `Soft Delete` for the Storage Account to achiev
 
 ## Configuration
 
-The Azure Function needs to have three `Application Settings` set up:
+You can set up the configuration via ENV variables instead of command line arguments too:
 
-1. `account`: The Storage Account name
-2. `accountKey`: one of the access keys for the Storage Account
-3. `containers`: A comma separated list of containers
+1. `AZ_STORAGE_ACCOUNT`: The Storage Account name
+2. `AZ_STORAGE_ACCOUNT_KEY`: one of the access keys for the Storage Account
+3. `AZ_STORAGE_CONTAINERS`: A comma separated list of containers
 
-For a `TimerTrigger` to work, you provide a schedule in the form of a cron expression in `function.json`. Azure Functions use **6 part** cron expressions, so for example once per hour is `0 0 * * * *`.
-
-See this for reference: https://codehollow.com/2017/02/azure-functions-time-trigger-cron-cheat-sheet/
-
-## Deployment
-
-I've used VSCode for this during development: https://code.visualstudio.com/tutorials/functions-extension/getting-started
-
-## Example Lifecycle Management rule
+## Example Lifecycle Management rule to remove old snapshots automatically
 
 This goes into the storage account's Lifecycle Management.
 
