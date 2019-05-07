@@ -1,4 +1,4 @@
-# Command line tool for Azure Blob backups
+# Command line tool for Azure Blob snapshots
 
 A fairly simple node.js command line tool for snapshotting all files/blobs periodically in given containers within a Storage Account.
 
