@@ -53,7 +53,8 @@ module.exports = async function (context) {
 
         // Do the actual snapshot or fail trying
         try {
-          sourceBlobURL.createSnapshot(Aborter.none);
+          const snapshot = await sourceBlobURL.createSnapshot(Aborter.none);
+          context.log(`${blob.name}: ${snapshot.snapshot}`);
           blobCount++;
         } catch (error) {
           context.log.error(error);
