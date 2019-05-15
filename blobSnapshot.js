@@ -57,7 +57,8 @@ async function main() {
 
         // Do the actual snapshot or fail trying
         try {
-          sourceBlobURL.createSnapshot(Aborter.none);
+          const snapshot = await sourceBlobURL.createSnapshot(Aborter.none);
+          console.log(`${blob.name}: ${snapshot.snapshot}`);
           blobCount++;
         } catch (error) {
           console.log(error);
