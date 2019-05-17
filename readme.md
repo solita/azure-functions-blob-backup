@@ -25,6 +25,7 @@ See this for reference: https://codehollow.com/2017/02/azure-functions-time-trig
 ## Deployment
 
 I've used VSCode for this during development: https://code.visualstudio.com/tutorials/functions-extension/getting-started
+Remember to run `npm install` before deploying.
 
 ## Example Lifecycle Management rule
 
